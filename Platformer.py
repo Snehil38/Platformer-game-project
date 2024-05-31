@@ -76,9 +76,11 @@ class Player(pygame.sprite.Sprite):
         self.hit_count = 0
         self.health_count  = 3
 
-    def game_over(self, run):
-        if self.rect.centerx > 800:
-            run = False
+    def game_over(self):
+        if self.rect.centery > 800:
+            return True
+        else:
+            return False
 
     def death(self):
         if self.health_count == 0:
@@ -372,7 +374,8 @@ def main(window):
     while run:
         clock.tick(FPS)
 
-        player.game_over(run)
+        if player.game_over():
+            run = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
