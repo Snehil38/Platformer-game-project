@@ -16,6 +16,7 @@ DEAD = False
 
 jump = pygame.mixer.Sound("assets/sound/jump.wav")
 bump = pygame.mixer.Sound("assets/sound/bump.wav")
+hit = pygame.mixer.Sound("assets/sound/hit.wav")
 music = pygame.mixer.music.load("assets/sound/title.mp3")
 pygame.mixer.music.play(-1)
 
@@ -101,6 +102,7 @@ class Player(pygame.sprite.Sprite):
         self.hit = True
         self.hit_count = 0
         self.health_count -= 1
+        hit.play()
 
     def move_left(self, vel):
         self.x_vel = -vel
