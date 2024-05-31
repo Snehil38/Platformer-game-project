@@ -14,6 +14,11 @@ FPS = 60
 PLAYER_VEL = 5
 DEAD = False
 
+jump = pygame.mixer.Sound("assets/sound/jump.wav")
+bump = pygame.mixer.Sound("assets/sound/bump.wav")
+music = pygame.mixer.music.load("assets/sound/title.mp3")
+pygame.mixer.music.play(-1)
+
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 
 def flip(sprites):
@@ -71,6 +76,10 @@ class Player(pygame.sprite.Sprite):
         self.hit_count = 0
         self.health_count  = 3
 
+    def game_over(self, run):
+        if self.rect.centerx > 800:
+            run = False
+
     def death(self):
         if self.health_count == 0:
             DEAD = True
@@ -124,6 +133,7 @@ class Player(pygame.sprite.Sprite):
     def hit_head(self):
         self.count = 0
         self.y_vel *= -1
+        bump.play()
 
     def update_sprite(self):
         sprite_sheet = "idle"
@@ -362,6 +372,8 @@ def main(window):
     while run:
         clock.tick(FPS)
 
+        player.game_over(run)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -370,7 +382,8 @@ def main(window):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and player.jump_count < 2:
                     player.jump()
-        
+                    jump.play()
+
         player.loop(FPS)
         for fire in fires:
             fire.loop()
